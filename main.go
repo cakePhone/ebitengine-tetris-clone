@@ -34,7 +34,7 @@ func init() {
 	var err error
 	tile_sprite, _, err = ebitenutil.NewImageFromFile("assets/tile.png")
 
- 	Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
+	Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
 
 	if err != nil {
 		log.Fatal(err)
@@ -48,8 +48,8 @@ func (g *Game) Update() error {
 
 	ticks_elapsed += 1
 
-	if ticks_elapsed%60 == 0 {
-		MoveTetraminosDown()
+	if ticks_elapsed%20 == 0 {
+		MoveTetraminoDown()
 
 		ticks_elapsed = 0
 	}
