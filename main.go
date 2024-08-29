@@ -13,6 +13,8 @@ import (
 // Game implements ebiten.Game interface.
 type Game struct{}
 
+var state int = 0
+
 const (
 	tileSize = 32
 )
@@ -45,6 +47,20 @@ func init() {
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
 	// Write your game's logical update.
+	if ebiten.IsKeyPressed(ebiten.KeyRight) {
+		tetramino_in_game.pos[0] += 1
+	}
+
+	// Game Over State
+	if state == -1 {
+		if ebiten.IsKeyPressed(ebiten.KeySpace) {
+			state = 0
+			tilemap = [screenWidth / tileSize][screenHeight / tileSize]bool{}
+			Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
+		}
+
+		return nil
+	}
 
 	ticks_elapsed += 1
 
@@ -54,9 +70,6 @@ func (g *Game) Update() error {
 		ticks_elapsed = 0
 	}
 
-	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		tetramino_in_game.pos[0] += 1
-	}
 
 	return nil
 }

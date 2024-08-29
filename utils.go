@@ -7,7 +7,6 @@ import (
 )
 
 func DrawTiles(screen *ebiten.Image) {
-
 	for x := 0; x < len(tilemap); x++ {
 		for y := 0; y < len(tilemap[x]); y++ {
 			if tilemap[x][y] {
@@ -38,6 +37,11 @@ func MoveTetraminoDown() {
 		}
 
 		Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
+
+		if Collide(&tetramino_in_game) {
+			log.Println("Game Over")
+			state = -1
+		}
 
 		return
 	}
