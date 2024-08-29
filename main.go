@@ -43,12 +43,6 @@ func init() {
 	}
 }
 
-func restart() {
-	state = 0
-	tilemap = [screenWidth / tileSize][screenHeight / tileSize]bool{}
-	Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
-}
-
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {

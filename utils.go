@@ -60,3 +60,9 @@ func Collide(tetr *Tetramino) bool {
 	}
 	return false
 }
+
+func restart() {
+	state = 0
+	tilemap = [screenWidth / tileSize][screenHeight / tileSize]bool{}
+	Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
+}
