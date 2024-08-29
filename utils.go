@@ -29,7 +29,7 @@ func DrawTiles(screen *ebiten.Image) {
 	}
 }
 
-func MoveTetraminosDown() {
+func MoveTetraminoDown() {
 	if Collide(&tetramino_in_game) {
 		for _, pos := range tetramino_in_game.tile_positions {
 				x := tetramino_in_game.pos[0] + pos[0]
