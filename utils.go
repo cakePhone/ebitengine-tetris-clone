@@ -7,47 +7,53 @@ import (
 )
 
 func DrawTiles(screen *ebiten.Image) {
-	for _, tetr := range tetraminos_in_game {
-		for _, pos := range tetr.tile_positions {
-			x := tetr.pos[0] + pos[0]
-			y := tetr.pos[1] + pos[1]
-			
-			op := ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(x*tileSize), float64(y*tileSize))
-			op.ColorScale.ScaleWithColor(tetr.color)
-			screen.DrawImage(tile_sprite, &op)
+
+	for x := 0; x < len(tilemap); x++ {
+		for y := 0; y < len(tilemap[x]); y++ {
+			if tilemap[x][y] {
+				op := ebiten.DrawImageOptions{}
+				op.GeoM.Translate(float64(x*tileSize), float64(y*tileSize))
+				screen.DrawImage(tile_sprite, &op)
+			}
 		}
+	}
+
+	for _, pos := range tetramino_in_game.tile_positions {
+		x := tetramino_in_game.pos[0] + pos[0]
+		y := tetramino_in_game.pos[1] + pos[1]
+		
+		op := ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(x*tileSize), float64(y*tileSize))
+		op.ColorScale.ScaleWithColor(tetramino_in_game.color)
+		screen.DrawImage(tile_sprite, &op)
 	}
 }
 
 func MoveTetraminosDown() {
-	for i := range tetraminos_in_game {
-		if tetraminos_in_game[i].placed {
-			continue
+	if Collide(&tetramino_in_game) {
+		for _, pos := range tetramino_in_game.tile_positions {
+				x := tetramino_in_game.pos[0] + pos[0]
+				y := tetramino_in_game.pos[1] + pos[1]
+				tilemap[x][y] = true
 		}
 
-		lowestTile := FindLowestTile(&tetraminos_in_game[i])
-
-		if lowestTile[1]+1 >= screenHeight/tileSize {
-			tetraminos_in_game[i].placed = true
-
-			Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetraminos_in_game)
-
-			return
-		}
-
-		tetraminos_in_game[i].pos[1] += 1
-		log.Println(tetraminos_in_game[i].pos)
+		Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
+		
+		return
 	}
+
+
+	tetramino_in_game.pos[1] += 1
+	log.Println(tetramino_in_game.pos)
 }
 
-func FindLowestTile(tetr *Tetramino) [2]int {
-	lowestTile := tetr.pos[1]
+func Collide(tetr *Tetramino) bool {
 	for _, pos := range tetr.tile_positions {
+		x := tetr.pos[0] + pos[0]
 		y := tetr.pos[1] + pos[1]
-		if y > lowestTile {
-			lowestTile = y
+		if x >= (screenWidth - 1)/tileSize || y >= (screenHeight - 1)/tileSize || tilemap[x][y] {
+			return true
 		}
 	}
-	return [2]int{tetr.pos[0], lowestTile}
+	return false
 }

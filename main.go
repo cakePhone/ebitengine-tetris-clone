@@ -22,7 +22,7 @@ const (
 	screenWidth  = 10 * tileSize
 )
 
-var tetraminos_in_game []Tetramino
+var tetramino_in_game Tetramino = Tetramino{}.Get_Random_Tetramino()
 
 var tilemap [screenWidth / tileSize][screenHeight / tileSize]bool
 
@@ -34,7 +34,7 @@ func init() {
 	var err error
 	tile_sprite, _, err = ebitenutil.NewImageFromFile("assets/tile.png")
 
-	tetraminos_in_game = append(tetraminos_in_game, Tetramino{}.New_L_Tetramino())
+ 	Tetramino{}.Get_Random_Tetramino().Add_To_Game(&tetramino_in_game)
 
 	if err != nil {
 		log.Fatal(err)
@@ -52,6 +52,10 @@ func (g *Game) Update() error {
 		MoveTetraminosDown()
 
 		ticks_elapsed = 0
+	}
+
+	if ebiten.IsKeyPressed(ebiten.KeyRight) {
+		tetramino_in_game.pos[0] += 1
 	}
 
 	return nil

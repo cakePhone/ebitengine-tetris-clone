@@ -11,11 +11,10 @@ type Tetramino struct {
 	pos            [2]int
 	color          color.RGBA
 	tile_positions [4][2]int
-	placed         bool
 }
 
-func (tetr Tetramino) Add_To_Game(tetraminos_in_game *[]Tetramino) {
-	*tetraminos_in_game = append(*tetraminos_in_game, tetr)
+func (tetr Tetramino) Add_To_Game(tetraminos_in_game *Tetramino) {
+	tetramino_in_game = tetr.Get_Random_Tetramino()
 }
 
 func (tetr Tetramino) Get_Random_Tetramino() Tetramino {
